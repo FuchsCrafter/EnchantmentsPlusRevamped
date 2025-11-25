@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.geolykt</groupId>
     <artifactId>enchantments-plus</artifactId>
-    <version>4.1.0</version>
+    <version>4.2.0</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -47,7 +47,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.19.2-R0.1-SNAPSHOT</version>
+            <version>1.21.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.jetbrains/annotations -->
@@ -60,6 +60,7 @@
 
         <!-- BStats, our metrics system -->
         <!-- https://mvnrepository.com/artifact/org.bstats/bstats-bukkit -->
+        <!-- Fucking spyware -->
         <dependency>
           <groupId>org.bstats</groupId>
           <artifactId>bstats-bukkit</artifactId>
@@ -190,7 +191,7 @@
         <dependency>
             <groupId>com.github.Slimefun</groupId>
             <artifactId>Slimefun4</artifactId>
-            <version>RC-32</version>
+            <version>RC-37</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
