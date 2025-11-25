@@ -18,15 +18,15 @@
 package de.geolykt.enchantments_plus.compatibility;
 
 import static org.bukkit.potion.PotionEffectType.ABSORPTION;
-import static org.bukkit.potion.PotionEffectType.DAMAGE_RESISTANCE;
+import static org.bukkit.potion.PotionEffectType.RESISTANCE;
 import static org.bukkit.potion.PotionEffectType.DOLPHINS_GRACE;
-import static org.bukkit.potion.PotionEffectType.FAST_DIGGING;
+import static org.bukkit.potion.PotionEffectType.HASTE;
 import static org.bukkit.potion.PotionEffectType.FIRE_RESISTANCE;
-import static org.bukkit.potion.PotionEffectType.HEAL;
+import static org.bukkit.potion.PotionEffectType.INSTANT_HEALTH;
 import static org.bukkit.potion.PotionEffectType.HEALTH_BOOST;
-import static org.bukkit.potion.PotionEffectType.INCREASE_DAMAGE;
+import static org.bukkit.potion.PotionEffectType.STRENGTH;
 import static org.bukkit.potion.PotionEffectType.INVISIBILITY;
-import static org.bukkit.potion.PotionEffectType.JUMP;
+import static org.bukkit.potion.PotionEffectType.JUMP_BOOST;
 import static org.bukkit.potion.PotionEffectType.NIGHT_VISION;
 import static org.bukkit.potion.PotionEffectType.REGENERATION;
 import static org.bukkit.potion.PotionEffectType.SATURATION;
@@ -43,6 +43,8 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -200,7 +202,7 @@ public class CompatibilityAdapter {
     private EnumSet<Material> lumberTrunkBlocks;
     private EnumSet<Material> lumberAllowBlocks;
 
-    private EnumSet<Biome> dryBiomes;
+    private Set<Biome> dryBiomes;
 
     private EnumMap<Material, Material> spectralMaterialConversion;
     private EnumMap<EntityType, EntityType> transformationMap;
@@ -287,7 +289,7 @@ public class CompatibilityAdapter {
 
     /**
      * Load the magic compatibility file
-     * 
+     *
      * @param config The appropriate FileConfiguration
      */
     public void loadValues(FileConfiguration config) {
@@ -325,7 +327,7 @@ public class CompatibilityAdapter {
                 e.printStackTrace();
             }
         }
-        dryBiomes = EnumSet.noneOf(Biome.class);
+        dryBiomes = new HashSet<>();
         for (String s : config.getStringList("dryBiomes")) {
             try {
                 dryBiomes.add(Biome.valueOf(s));
@@ -435,7 +437,7 @@ public class CompatibilityAdapter {
         return ores;
     }
 
-    public EnumSet<Biome> dryBiomes() {
+    public Set<Biome> dryBiomes() {
         return dryBiomes;
     }
 
@@ -502,9 +504,9 @@ public class CompatibilityAdapter {
             if (ent.getType() == EntityType.CREEPER)
                 ((Creeper) newEnt).setPowered(!((Creeper) ent).isPowered());
             break;
-        case MUSHROOM_COW:
+        /*case MUSHROOM_COW:
             ((MushroomCow) newEnt).setVariant(MushroomCow.Variant.values()[rnd.nextInt(MushroomCow.Variant.values().length)]);
-            break;
+            break;*/
         default:
             break;
         }
@@ -552,12 +554,12 @@ public class CompatibilityAdapter {
     // FIXME make this configurable
     public List<PotionEffectType> potionPotions() {
         return Arrays.asList(ABSORPTION,
-                DAMAGE_RESISTANCE, FIRE_RESISTANCE, SPEED, JUMP, INVISIBILITY, INCREASE_DAMAGE, HEALTH_BOOST, HEAL,
-                REGENERATION, NIGHT_VISION, SATURATION, FAST_DIGGING, WATER_BREATHING, DOLPHINS_GRACE);
+                RESISTANCE, FIRE_RESISTANCE, SPEED, JUMP_BOOST, INVISIBILITY, STRENGTH, HEALTH_BOOST, INSTANT_HEALTH,
+                REGENERATION, NIGHT_VISION, SATURATION, HASTE, WATER_BREATHING, DOLPHINS_GRACE);
     }
 
     // TODO what do these values even mean?
-    private static final int[] GLUTTONY_FOOD_LEVELS = {4, 5, 1, 6, 5, 3, 1, 6, 5, 6, 8, 5, 6, 2, 1, 2, 6, 8, 10, 8}; 
+    private static final int[] GLUTTONY_FOOD_LEVELS = {4, 5, 1, 6, 5, 3, 1, 6, 5, 6, 8, 5, 6, 2, 1, 2, 6, 8, 10, 8};
 
     public int[] gluttonyFoodLevels() {
         return GLUTTONY_FOOD_LEVELS;
@@ -572,10 +574,10 @@ public class CompatibilityAdapter {
 
     // FIXME make this configurable
     private final Material[] GLUTTONY_FOOD_ITEMS = new Material[]{
-            Material.APPLE, Material.BAKED_POTATO, Material.BEETROOT, 
-            Material.BEETROOT_SOUP, Material.BREAD, Material.CARROT, Material.TROPICAL_FISH, Material.COOKED_CHICKEN, 
+            Material.APPLE, Material.BAKED_POTATO, Material.BEETROOT,
+            Material.BEETROOT_SOUP, Material.BREAD, Material.CARROT, Material.TROPICAL_FISH, Material.COOKED_CHICKEN,
             Material.COOKED_COD, Material.COOKED_MUTTON, Material.COOKED_PORKCHOP, Material.COOKED_RABBIT,
-            Material.COOKED_SALMON, Material.COOKIE, Material.DRIED_KELP, Material.MELON_SLICE, 
+            Material.COOKED_SALMON, Material.COOKIE, Material.DRIED_KELP, Material.MELON_SLICE,
             Material.MUSHROOM_STEW, Material.PUMPKIN_PIE, Material.RABBIT_STEW, Material.COOKED_BEEF};
 
     /**
@@ -684,7 +686,7 @@ public class CompatibilityAdapter {
         }
         // chance that the item is broken is 1/(level+1)
         // So at level = 2 it's 33%, at level = 0 it's 100%, at level 1 it's 50%, at level = 3 it's 25%
-        if (ThreadLocalRandom.current().nextInt(1000) <= (1000/(stack.getEnchantmentLevel(Enchantment.DURABILITY)+1))) {
+        if (ThreadLocalRandom.current().nextInt(1000) <= (1000/(stack.getEnchantmentLevel(Enchantment.UNBREAKING)+1))) {
             ((Damageable)im).setDamage(((Damageable) im).getDamage() + damage);
             stack.setItemMeta(im);
         }
