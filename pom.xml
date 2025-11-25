@@ -10,6 +10,12 @@
     </properties>
     <repositories>
         <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2/</url>
+            <releases><enabled>true</enabled></releases>
+            <snapshots><enabled>false</enabled></snapshots>
+        </repository>
+        <repository>
             <id>spigot-repo</id> <!-- You know what this does, I hope -->
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
@@ -257,15 +263,16 @@
         <dependency>
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm</artifactId>
-            <version>9.4</version>
+            <version>9.9</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm-tree</artifactId>
-            <version>9.4</version>
+            <version>9.9</version>
             <scope>compile</scope>
         </dependency>
+
 
         <!-- TODO Anti-cheat APIs for Anti-cheat integrations-->
     </dependencies>
